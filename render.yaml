@@ -16,7 +16,46 @@ services:
       - key: DATABASE_URL
         fromDatabase: unitrans-db
       - key: CORS_ALLOWED_ORIGINS
-        value: "https://your-frontend.onrender.com"
+        value: "https://unitrans.onrender.com,https://frontend-driver.onrender.com,https://frontend-manager.onrender.com,https://frontend-student.onrender.com"
+
+  - type: web
+    name: frontend-driver
+    env: node
+    plan: starter
+    region: oregon
+    buildCommand: cd frontend-driver && npm install
+    startCommand: cd frontend-driver && npm install && npm run build && npx next start -p $PORT
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        value: "https://unitrans.onrender.com"
+
+  - type: web
+    name: frontend-manager
+    env: node
+    plan: starter
+    region: oregon
+    buildCommand: cd frontend-manager && npm install
+    startCommand: cd frontend-manager && npm install && npm run build && npx next start -p $PORT
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        value: "https://unitrans.onrender.com"
+
+  - type: web
+    name: frontend-student
+    env: node
+    plan: starter
+    region: oregon
+    buildCommand: cd frontend-student && npm install
+    startCommand: cd frontend-student && npm install && npm run build && npx next start -p $PORT
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        value: "https://unitrans.onrender.com"
 
 databases:
   - name: unitrans-db

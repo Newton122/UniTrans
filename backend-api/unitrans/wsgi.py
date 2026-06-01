@@ -4,3 +4,23 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'unitrans.settings')
 
 application = get_wsgi_application()
+
+# Optional: create a superuser automatically when certain env vars are provided.
+# Set `DJANGO_AUTO_SUPERUSER=1` and provide `DJANGO_SUPERUSER_USERNAME`,
+# `DJANGO_SUPERUSER_EMAIL`, and `DJANGO_SUPERUSER_PASSWORD` in Render environment variables.
+try:
+	if os.environ.get('DJANGO_AUTO_SUPERUSER', '').lower() in ('1', 'true', 'yes'):
+		from django.contrib.auth import get_user_model
+		User = get_user_model()
+		username = os.environ.get('DJANGO_SUPERUSER_USERNAME')
+		email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
+		password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
+		if username and password:
+			if not User.objects.filter(username=username).exists():
+				User.objects.create_superuser(username=username, email=email or '', password=password)
+				print('Auto-created superuser:', username)
+			else:
+				print('Superuser already exists:', username)
+except Exception as exc:
+	# Avoid crashing the WSGI process if something goes wrong here
+	print('Auto-superuser setup skipped or failed:', exc)

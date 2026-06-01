@@ -1,10 +1,14 @@
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic.base import RedirectView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 from apps.accounts.urls import auth_urlpatterns, student_urlpatterns
 
 urlpatterns = [
+    # Root redirect to API root
+    path('', RedirectView.as_view(url='/api/', permanent=False)),
+
     # Django admin
     path('admin/', admin.site.urls),
 
