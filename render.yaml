@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: unitrans-backend
+    env: python
+    plan: starter
+    region: oregon
+    buildCommand: pip install -r backend-api/requirements.txt
+    startCommand: cd backend-api && python manage.py migrate && gunicorn unitrans.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: SECRET_KEY
+        value: "django-insecure-change-me-in-production"
+      - key: DATABASE_URL
+        fromDatabase: unitrans-db
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://your-frontend.onrender.com"
+
+databases:
+  - name: unitrans-db
+    engine: postgresql
+    version: "15"
+    plan: starter

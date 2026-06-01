@@ -7,3 +7,4 @@ python-decouple==3.8
 dj-database-url==2.3.0
 Pillow==11.1.0
 django-cors-headers==4.4.0
+gunicorn==21.2.0
