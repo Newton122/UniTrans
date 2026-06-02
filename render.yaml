@@ -21,10 +21,11 @@ services:
   - type: web
     name: frontend-driver
     env: node
+    nodeVersion: 20
     plan: starter
     region: oregon
-    buildCommand: cd frontend-driver && npm install
-    startCommand: cd frontend-driver && npm install && npm run build && npx next start -p $PORT
+    buildCommand: cd frontend-driver && npm install && npm run build
+    startCommand: cd frontend-driver && npx next start -p $PORT
     envVars:
       - key: NODE_ENV
         value: production
@@ -34,10 +35,11 @@ services:
   - type: web
     name: frontend-manager
     env: node
+    nodeVersion: 20
     plan: starter
     region: oregon
-    buildCommand: cd frontend-manager && npm install
-    startCommand: cd frontend-manager && npm install && npm run build && npx next start -p $PORT
+    buildCommand: cd frontend-manager && npm install && npm run build
+    startCommand: cd frontend-manager && npx next start -p $PORT
     envVars:
       - key: NODE_ENV
         value: production
@@ -47,10 +49,11 @@ services:
   - type: web
     name: frontend-student
     env: node
+    nodeVersion: 20
     plan: starter
     region: oregon
-    buildCommand: cd frontend-student && npm install
-    startCommand: cd frontend-student && npm install && npm run build && npx next start -p $PORT
+    buildCommand: cd frontend-student && npm install && npm run build
+    startCommand: cd frontend-student && npx next start -p $PORT
     envVars:
       - key: NODE_ENV
         value: production
