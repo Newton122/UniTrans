@@ -18,11 +18,13 @@ try:
 		username = os.environ.get('DJANGO_SUPERUSER_USERNAME')
 		email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
 		password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
+		# Optional explicit name for the superuser; fallback to username/email
+		name = os.environ.get('DJANGO_SUPERUSER_NAME') or username or email or 'admin'
 		if username and password:
 			lookup = {username_field: username}
 			if not User.objects.filter(**lookup).exists():
 				# create_superuser should accept keyword args matching the model
-				create_kwargs = {username_field: username, 'email': email or '', 'password': password}
+				create_kwargs = {username_field: username, 'email': email or '', 'name': name, 'password': password}
 				User.objects.create_superuser(**create_kwargs)
 				print('Auto-created superuser:', username)
 			else:

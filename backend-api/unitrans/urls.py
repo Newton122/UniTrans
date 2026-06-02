@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic.base import RedirectView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from .health import health
 
 from apps.accounts.urls import auth_urlpatterns, student_urlpatterns
 
@@ -19,6 +20,9 @@ urlpatterns = [
 
     # Authentication
     path('api/', include((auth_urlpatterns, 'auth'))),
+
+    # Health check for smoke tests
+    path('api/health/', health),
 
     # Student profile & dashboard
     path('api/', include((student_urlpatterns, 'accounts'))),
