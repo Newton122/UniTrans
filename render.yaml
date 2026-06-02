@@ -25,7 +25,7 @@ services:
     plan: starter
     region: oregon
     buildCommand: cd frontend-driver && NPM_CONFIG_PRODUCTION=false npm ci && npm run build
-    startCommand: cd frontend-driver && npx next start -p $PORT
+    startCommand: cd frontend-driver && npx next start --hostname 0.0.0.0 -p $PORT
     envVars:
       - key: NODE_ENV
         value: production
@@ -39,7 +39,7 @@ services:
     plan: starter
     region: oregon
     buildCommand: cd frontend-manager && NPM_CONFIG_PRODUCTION=false npm ci && npm run build
-    startCommand: cd frontend-manager && npx next start -p $PORT
+    startCommand: cd frontend-manager && npx next start --hostname 0.0.0.0 -p $PORT
     envVars:
       - key: NODE_ENV
         value: production
@@ -53,7 +53,7 @@ services:
     plan: starter
     region: oregon
     buildCommand: cd frontend-student && NPM_CONFIG_PRODUCTION=false npm ci && npm run build
-    startCommand: cd frontend-student && npx next start -p $PORT
+    startCommand: cd frontend-student && npx next start --hostname 0.0.0.0 -p $PORT
     envVars:
       - key: NODE_ENV
         value: production
