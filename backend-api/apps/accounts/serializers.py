@@ -124,7 +124,10 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
-        user = authenticate(email=attrs['email'], password=attrs['password'])
+        # Use username=... to be compatible with Django's authentication backends
+        # (the project's `User.USERNAME_FIELD` is `email`). Passing `username`
+        # ensures `ModelBackend` maps correctly regardless of backend implementation.
+        user = authenticate(username=attrs['email'], password=attrs['password'])
         if not user:
             raise serializers.ValidationError('Invalid email or password.')
         if not user.is_active:
