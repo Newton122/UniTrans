@@ -3,7 +3,7 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ??
   (process.env.NODE_ENV === "production"
-    ? "https://unitrans.onrender.com"
+    ? "https://unitrans-backend.onrender.com"
     : "http://localhost:8000");
 
 export const driverClient = axios.create({
