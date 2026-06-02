@@ -12,12 +12,18 @@ try:
 	if os.environ.get('DJANGO_AUTO_SUPERUSER', '').lower() in ('1', 'true', 'yes'):
 		from django.contrib.auth import get_user_model
 		User = get_user_model()
+		# Use the user model's USERNAME_FIELD for lookups and creation so this
+		# works for custom user models where the username field is 'email'.
+		username_field = getattr(User, 'USERNAME_FIELD', 'username')
 		username = os.environ.get('DJANGO_SUPERUSER_USERNAME')
 		email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
 		password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
 		if username and password:
-			if not User.objects.filter(username=username).exists():
-				User.objects.create_superuser(username=username, email=email or '', password=password)
+			lookup = {username_field: username}
+			if not User.objects.filter(**lookup).exists():
+				# create_superuser should accept keyword args matching the model
+				create_kwargs = {username_field: username, 'email': email or '', 'password': password}
+				User.objects.create_superuser(**create_kwargs)
 				print('Auto-created superuser:', username)
 			else:
 				print('Superuser already exists:', username)
