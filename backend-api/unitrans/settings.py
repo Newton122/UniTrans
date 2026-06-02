@@ -158,6 +158,10 @@ SPECTACULAR_SETTINGS = {
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
     default=(
+        'https://unitrans.onrender.com,'
+        'https://frontend-driver.onrender.com,'
+        'https://frontend-manager.onrender.com,'
+        'https://frontend-student.onrender.com,'
         'http://localhost:3000,'
         'http://127.0.0.1:3000,'
         'http://localhost:3001,'
