@@ -24,6 +24,25 @@ if (typeof window !== "undefined") {
   }
 }
 
+studentClient.interceptors.request.use((config) => {
+  if (config && config.url && config.url.includes('/api/auth/login')) {
+    console.info('[student] login request payload:', config.data);
+  }
+  return config;
+});
+
+studentClient.interceptors.response.use(
+  (resp) => resp,
+  (err) => {
+    try {
+      if (err?.config?.url && err.config.url.includes('/api/auth/login')) {
+        console.error('[student] login error response:', err.response?.data);
+      }
+    } catch (e) {}
+    return Promise.reject(err);
+  }
+);
+
 // ─── Token helpers ────────────────────────────────────────────────────────────
 
 export const getStudentAccessToken = (): string | null =>

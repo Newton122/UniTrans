@@ -26,6 +26,30 @@ if (typeof window !== "undefined") {
   }
 }
 
+// Log login request payloads and error responses for debugging
+client.interceptors.request.use((config) => {
+  if (config && config.url && config.url.includes('/api/auth/login')) {
+    // eslint-disable-next-line no-console
+    console.info('[manager] login request payload:', config.data);
+  }
+  return config;
+});
+
+client.interceptors.response.use(
+  (resp) => resp,
+  (err) => {
+    try {
+      if (err?.config?.url && err.config.url.includes('/api/auth/login')) {
+        // eslint-disable-next-line no-console
+        console.error('[manager] login error response:', err.response?.data);
+      }
+    } catch (e) {
+      // ignore logging errors
+    }
+    return Promise.reject(err);
+  }
+);
+
 // ─── Token helpers ────────────────────────────────────────────────────────────
 
 const getAccessToken = (): string | null =>

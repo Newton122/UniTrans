@@ -24,6 +24,25 @@ if (typeof window !== "undefined") {
   }
 }
 
+driverClient.interceptors.request.use((config) => {
+  if (config && config.url && config.url.includes('/api/auth/login')) {
+    console.info('[driver] login request payload:', config.data);
+  }
+  return config;
+});
+
+driverClient.interceptors.response.use(
+  (resp) => resp,
+  (err) => {
+    try {
+      if (err?.config?.url && err.config.url.includes('/api/auth/login')) {
+        console.error('[driver] login error response:', err.response?.data);
+      }
+    } catch (e) {}
+    return Promise.reject(err);
+  }
+);
+
 export const getDriverAccessToken = (): string | null =>
   typeof window !== "undefined"
     ? localStorage.getItem("driver_access_token")
