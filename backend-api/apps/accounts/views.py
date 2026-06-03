@@ -90,12 +90,21 @@ class LoginView(APIView):
     )
     def post(self, request):
         import logging
+        import json
         logger = logging.getLogger(__name__)
-        logger.info(f'LoginView.post() received request.data: {request.data}')
-        logger.info(f'LoginView.post() request.content_type: {request.content_type}')
+        logger.info(f'LoginView.post() raw body: {request.body}')
+        logger.info(f'LoginView.post() content_type: {request.content_type}')
+        logger.info(f'LoginView.post() request.data: {request.data}')
+        logger.info(f'LoginView.post() request.data type: {type(request.data)}')
+        logger.info(f'LoginView.post() request.data keys: {request.data.keys() if hasattr(request.data, "keys") else "N/A"}')
+        print(f'===== LoginView POST =====')
+        print(f'Raw body: {request.body}')
+        print(f'Content-Type: {request.content_type}')
+        print(f'request.data: {request.data}')
         serializer = LoginSerializer(data=request.data)
         if not serializer.is_valid():
             logger.error(f'LoginSerializer validation failed: {serializer.errors}')
+            print(f'Validation errors: {serializer.errors}')
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         access = CustomAccessToken.for_user(user)
