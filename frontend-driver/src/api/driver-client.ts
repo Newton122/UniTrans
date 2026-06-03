@@ -6,15 +6,21 @@ const BASE_URL =
     ? "https://unitrans-backend.onrender.com"
     : "http://localhost:8000");
 
+const NORMALIZED_BASE_URL = BASE_URL.replace(
+  "https://unitrans.onrender.com",
+  "https://unitrans-backend.onrender.com"
+);
+
 export const driverClient = axios.create({
-  baseURL: BASE_URL,
+  baseURL: NORMALIZED_BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 
 if (typeof window !== "undefined") {
-  console.info("[driver] API BASE_URL:", BASE_URL);
-  if (!BASE_URL.includes("unitrans-backend")) {
-    console.error("[driver] WARNING: BASE_URL does not point to unitrans-backend:", BASE_URL);
+  console.info("[driver] API BASE_URL (raw):", BASE_URL);
+  console.info("[driver] API BASE_URL (normalized):", NORMALIZED_BASE_URL);
+  if (!NORMALIZED_BASE_URL.includes("unitrans-backend")) {
+    console.error("[driver] WARNING: BASE_URL does not point to unitrans-backend:", NORMALIZED_BASE_URL);
   }
 }
 
@@ -92,7 +98,7 @@ driverClient.interceptors.response.use(
 
     try {
       const { data } = await axios.post<{ access: string; refresh: string }>(
-        `${BASE_URL}/api/auth/token/refresh/`,
+        `${NORMALIZED_BASE_URL}/api/auth/token/refresh/`,
         { refresh }
       );
       setDriverTokens(data.access, data.refresh);
