@@ -90,22 +90,31 @@ class LoginView(APIView):
     )
     def post(self, request):
         import logging
-        import json
         logger = logging.getLogger(__name__)
-        logger.info(f'LoginView.post() raw body: {request.body}')
-        logger.info(f'LoginView.post() content_type: {request.content_type}')
-        logger.info(f'LoginView.post() request.data: {request.data}')
-        logger.info(f'LoginView.post() request.data type: {type(request.data)}')
-        logger.info(f'LoginView.post() request.data keys: {request.data.keys() if hasattr(request.data, "keys") else "N/A"}')
-        print(f'===== LoginView POST =====')
-        print(f'Raw body: {request.body}')
-        print(f'Content-Type: {request.content_type}')
-        print(f'request.data: {request.data}')
-        serializer = LoginSerializer(data=request.data)
-        if not serializer.is_valid():
-            logger.error(f'LoginSerializer validation failed: {serializer.errors}')
-            print(f'Validation errors: {serializer.errors}')
-        serializer.is_valid(raise_exception=True)
+        print(f"\n===== LoginView.post() called =====")
+        print(f"Raw body bytes: {request.body}")
+        print(f"Raw body decoded: {request.body.decode('utf-8', errors='ignore')}")
+        print(f"Content-Type: {request.content_type}")
+        print(f"request.data: {request.data}")
+        print(f"request.data type: {type(request.data)}")
+        
+        try:
+            serializer = LoginSerializer(data=request.data)
+            is_valid = serializer.is_valid(raise_exception=True)
+            user = serializer.validated_data['user']
+            access = CustomAccessToken.for_user(user)
+            refresh = RefreshToken.for_user(user)
+            print(f"Login successful for user: {user.email}")
+            return Response({
+                'access': str(access),
+                'refresh': str(refresh),
+                'user': UserSerializer(user).data,
+            })
+        except Exception as e:
+            print(f"Exception in LoginView: {type(e).__name__}: {e}")
+            import traceback
+            traceback.print_exc()
+            raise
         user = serializer.validated_data['user']
         access = CustomAccessToken.for_user(user)
         refresh = RefreshToken.for_user(user)
