@@ -155,23 +155,27 @@ SPECTACULAR_SETTINGS = {
 }
 
 # CORS
-CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS',
-    default=(
-        'https://unitrans.onrender.com,'
-        'https://frontend-driver.onrender.com,'
-        'https://frontend-manager.onrender.com,'
-        'https://frontend-student.onrender.com,'
-        'https://frontent-driver.onrender.com,'
-        'https://frontent-manager.onrender.com,'
-        'https://frontent-student.onrender.com,'
-        'http://localhost:3000,'
-        'http://127.0.0.1:3000,'
-        'http://localhost:3001,'
-        'http://127.0.0.1:3001,'
-        'http://localhost:3002,'
-        'http://127.0.0.1:3002,'
-        'http://localhost:5173'
-    ),
-).split(',')
+CORS_ALLOWED_ORIGINS = [
+    origin.strip() for origin in config(
+        'CORS_ALLOWED_ORIGINS',
+        default=(
+            'https://unitrans.onrender.com,'
+            'https://frontend-driver.onrender.com,'
+            'https://frontend-manager.onrender.com,'
+            'https://frontend-student.onrender.com,'
+            'https://frontent-driver.onrender.com,'
+            'https://frontent-manager.onrender.com,'
+            'https://frontent-student.onrender.com,'
+            'http://localhost:3000,'
+            'http://127.0.0.1:3000,'
+            'http://localhost:3001,'
+            'http://127.0.0.1:3001,'
+            'http://localhost:3002,'
+            'http://127.0.0.1:3002,'
+            'http://localhost:5173'
+        ),
+    ).split(',')
+]
 CORS_ALLOW_CREDENTIALS = True
+# Temporary: allow all origins for debugging CORS issues
+CORS_ALLOW_ALL_ORIGINS = True
