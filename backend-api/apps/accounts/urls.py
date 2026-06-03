@@ -17,11 +17,13 @@ from .views import (
     StudentListView,
     StudentMeView,
 )
+from .test_views import DebugLoginTestView
 
 auth_urlpatterns = [
     path('auth/register/', RegisterView.as_view(), name='auth-register'),
     path('auth/manager/register/', ManagerRegisterView.as_view(), name='auth-manager-register'),
     path('auth/login/', LoginView.as_view(), name='auth-login'),
+    path('auth/debug-test/', DebugLoginTestView.as_view(), name='debug-test'),
     path('auth/token/refresh/', CustomTokenRefreshView.as_view(), name='token-refresh'),
     path('auth/reset-password/', ChangePasswordView.as_view(), name='auth-reset-password'),
 ]

@@ -93,17 +93,16 @@ class LoginView(APIView):
         print(f"Raw request.body: {request.body}")
         print(f"request.content_type: {request.content_type}")
         print(f"request.data: {request.data}")
-        print(f"request.POST: {dict(request.POST)}")
+        print(f"request.data type: {type(request.data)}")
+        
+        # Try to access email/password
+        email_val = request.data.get('email') if hasattr(request.data, 'get') else None
+        password_val = request.data.get('password') if hasattr(request.data, 'get') else None
+        print(f"Direct access - email: {email_val}, password: {password_val}")
+        print("=====================================\n")
+        
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        access = CustomAccessToken.for_user(user)
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'access': str(access),
-            'refresh': str(refresh),
-            'user': UserSerializer(user).data,
-        })
         user = serializer.validated_data['user']
         access = CustomAccessToken.for_user(user)
         refresh = RefreshToken.for_user(user)
