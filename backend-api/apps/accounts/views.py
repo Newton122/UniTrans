@@ -89,7 +89,13 @@ class LoginView(APIView):
         },
     )
     def post(self, request):
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f'LoginView.post() received request.data: {request.data}')
+        logger.info(f'LoginView.post() request.content_type: {request.content_type}')
         serializer = LoginSerializer(data=request.data)
+        if not serializer.is_valid():
+            logger.error(f'LoginSerializer validation failed: {serializer.errors}')
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         access = CustomAccessToken.for_user(user)
