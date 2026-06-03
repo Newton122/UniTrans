@@ -29,10 +29,12 @@ if (typeof window !== "undefined") {
 // Log login request payloads and error responses for debugging
 client.interceptors.request.use((config) => {
   if (config && config.url && config.url.includes('/api/auth/login')) {
-    console.info('[manager] login request config.data:', config.data);
-    console.info('[manager] login request config.data type:', typeof config.data);
-    console.info('[manager] login request config.data stringified:', JSON.stringify(config.data));
-    console.info('[manager] login request headers:', config.headers);
+    console.log('[manager-axios] login POST request:');
+    console.log('  URL:', config.url);
+    console.log('  Method:', config.method);
+    console.log('  Headers:', config.headers);
+    console.log('  Data:', config.data);
+    console.log('  Data type:', typeof config.data);
   }
   return config;
 });

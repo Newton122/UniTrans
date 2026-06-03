@@ -89,32 +89,21 @@ class LoginView(APIView):
         },
     )
     def post(self, request):
-        import logging
-        logger = logging.getLogger(__name__)
-        print(f"\n===== LoginView.post() called =====")
-        print(f"Raw body bytes: {request.body}")
-        print(f"Raw body decoded: {request.body.decode('utf-8', errors='ignore')}")
-        print(f"Content-Type: {request.content_type}")
+        print(f"\n===== LoginView.post() =====")
+        print(f"Raw request.body: {request.body}")
+        print(f"request.content_type: {request.content_type}")
         print(f"request.data: {request.data}")
-        print(f"request.data type: {type(request.data)}")
-        
-        try:
-            serializer = LoginSerializer(data=request.data)
-            is_valid = serializer.is_valid(raise_exception=True)
-            user = serializer.validated_data['user']
-            access = CustomAccessToken.for_user(user)
-            refresh = RefreshToken.for_user(user)
-            print(f"Login successful for user: {user.email}")
-            return Response({
-                'access': str(access),
-                'refresh': str(refresh),
-                'user': UserSerializer(user).data,
-            })
-        except Exception as e:
-            print(f"Exception in LoginView: {type(e).__name__}: {e}")
-            import traceback
-            traceback.print_exc()
-            raise
+        print(f"request.POST: {dict(request.POST)}")
+        serializer = LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        access = CustomAccessToken.for_user(user)
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'access': str(access),
+            'refresh': str(refresh),
+            'user': UserSerializer(user).data,
+        })
         user = serializer.validated_data['user']
         access = CustomAccessToken.for_user(user)
         refresh = RefreshToken.for_user(user)
