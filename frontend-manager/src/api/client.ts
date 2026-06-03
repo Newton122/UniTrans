@@ -29,8 +29,10 @@ if (typeof window !== "undefined") {
 // Log login request payloads and error responses for debugging
 client.interceptors.request.use((config) => {
   if (config && config.url && config.url.includes('/api/auth/login')) {
-    // eslint-disable-next-line no-console
-    console.info('[manager] login request payload:', config.data);
+    console.info('[manager] login request config.data:', config.data);
+    console.info('[manager] login request config.data type:', typeof config.data);
+    console.info('[manager] login request config.data stringified:', JSON.stringify(config.data));
+    console.info('[manager] login request headers:', config.headers);
   }
   return config;
 });
