@@ -11,6 +11,13 @@ export const studentClient = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+if (typeof window !== "undefined") {
+  console.info("[student] API BASE_URL:", BASE_URL);
+  if (!BASE_URL.includes("unitrans-backend")) {
+    console.error("[student] WARNING: BASE_URL does not point to unitrans-backend:", BASE_URL);
+  }
+}
+
 // ─── Token helpers ────────────────────────────────────────────────────────────
 
 export const getStudentAccessToken = (): string | null =>

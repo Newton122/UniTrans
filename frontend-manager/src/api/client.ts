@@ -11,6 +11,13 @@ export const client = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+if (typeof window !== "undefined") {
+  console.info("[manager] API BASE_URL:", BASE_URL);
+  if (!BASE_URL.includes("unitrans-backend")) {
+    console.error("[manager] WARNING: BASE_URL does not point to unitrans-backend:", BASE_URL);
+  }
+}
+
 // ─── Token helpers ────────────────────────────────────────────────────────────
 
 const getAccessToken = (): string | null =>

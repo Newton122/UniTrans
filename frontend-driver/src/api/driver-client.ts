@@ -11,6 +11,13 @@ export const driverClient = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+if (typeof window !== "undefined") {
+  console.info("[driver] API BASE_URL:", BASE_URL);
+  if (!BASE_URL.includes("unitrans-backend")) {
+    console.error("[driver] WARNING: BASE_URL does not point to unitrans-backend:", BASE_URL);
+  }
+}
+
 export const getDriverAccessToken = (): string | null =>
   typeof window !== "undefined"
     ? localStorage.getItem("driver_access_token")
