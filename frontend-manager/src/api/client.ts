@@ -19,19 +19,7 @@ export const client = axios.create({
 });
 
 // Log login request payloads and error responses for debugging
-client.interceptors.request.use((config) => {
-  return config;
-});
-
-client.interceptors.response.use(
-  (resp) => resp,
-  (err) => Promise.reject(err)
-);
-      // ignore logging errors
-    }
-    return Promise.reject(err);
-  }
-);
+// (No-op logging interceptor removed to avoid duplicate response handlers.)
 
 // ─── Token helpers ────────────────────────────────────────────────────────────
 
