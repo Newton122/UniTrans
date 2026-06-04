@@ -3,14 +3,11 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ??
   (process.env.NODE_ENV === "production"
-    ? "https://unitrans-backend.onrender.com"
+    ? "https://unitrans.onrender.com"
     : "http://localhost:8000");
 
-// Normalize old mistaken host to the correct backend host for backwards compatibility.
-const NORMALIZED_BASE_URL = BASE_URL.replace(
-  "https://unitrans.onrender.com",
-  "https://unitrans-backend.onrender.com"
-);
+// No normalization needed - use backend URL directly.
+const NORMALIZED_BASE_URL = BASE_URL;
 
 export const client = axios.create({
   baseURL: NORMALIZED_BASE_URL,
