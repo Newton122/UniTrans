@@ -30,7 +30,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: NEXT_PUBLIC_API_URL
-        value: "https://unitrans.onrender.com"
+        value: "https://unitrans-backend.onrender.com"
 
   - type: web
     name: frontend-manager
@@ -44,7 +44,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: NEXT_PUBLIC_API_URL
-        value: "https://unitrans.onrender.com"
+        value: "https://unitrans-backend.onrender.com"
 
   - type: web
     name: frontend-student
@@ -58,7 +58,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: NEXT_PUBLIC_API_URL
-        value: "https://unitrans.onrender.com"
+        value: "https://unitrans-backend.onrender.com"
 
 databases:
   - name: unitrans-db
