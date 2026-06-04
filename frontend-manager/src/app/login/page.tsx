@@ -91,14 +91,12 @@ export default function LoginPage() {
     setError("");
     if (!email.trim())  { setError("Email is required."); return; }
     if (!password)      { setError("Password is required."); return; }
-    console.log('[manager-login] handleSubmit called with email:', email, 'password:', password);
     setLoading(true);
     try {
       await login({ email, password });
       router.push("/dashboard");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "";
-      console.error('[manager-login] login error:', msg);
       if (msg.includes("managers only")) {
         setError("Access denied: this portal is for managers only.");
       } else {

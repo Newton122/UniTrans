@@ -3,12 +3,12 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ??
   (process.env.NODE_ENV === "production"
-    ? "https://unitrans-backend.onrender.com"
+    ? "https://unitrans.onrender.com"
     : "http://localhost:8000");
 
 const NORMALIZED_BASE_URL = BASE_URL.replace(
-  "https://unitrans.onrender.com",
-  "https://unitrans-backend.onrender.com"
+  "https://unitrans-backend.onrender.com",
+  "https://unitrans.onrender.com"
 );
 
 export const studentClient = axios.create({
@@ -16,31 +16,13 @@ export const studentClient = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-if (typeof window !== "undefined") {
-  console.info("[student] API BASE_URL (raw):", BASE_URL);
-  console.info("[student] API BASE_URL (normalized):", NORMALIZED_BASE_URL);
-  if (!NORMALIZED_BASE_URL.includes("unitrans-backend")) {
-    console.error("[student] WARNING: BASE_URL does not point to unitrans-backend:", NORMALIZED_BASE_URL);
-  }
-}
-
 studentClient.interceptors.request.use((config) => {
-  if (config && config.url && config.url.includes('/api/auth/login')) {
-    console.info('[student] login request payload:', config.data);
-  }
   return config;
 });
 
 studentClient.interceptors.response.use(
   (resp) => resp,
-  (err) => {
-    try {
-      if (err?.config?.url && err.config.url.includes('/api/auth/login')) {
-        console.error('[student] login error response:', err.response?.data);
-      }
-    } catch (e) {}
-    return Promise.reject(err);
-  }
+  (err) => Promise.reject(err)
 );
 
 // ─── Token helpers ────────────────────────────────────────────────────────────

@@ -3,14 +3,14 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ??
   (process.env.NODE_ENV === "production"
-    ? "https://unitrans-backend.onrender.com"
+    ? "https://unitrans.onrender.com"
     : "http://localhost:8000");
 
 // Normalize common mistaken host to the correct backend host so deployed bundles
 // that still reference the old hostname continue to work until a full rebuild.
 const NORMALIZED_BASE_URL = BASE_URL.replace(
-  "https://unitrans.onrender.com",
-  "https://unitrans-backend.onrender.com"
+  "https://unitrans-backend.onrender.com",
+  "https://unitrans.onrender.com"
 );
 
 export const client = axios.create({
@@ -18,36 +18,15 @@ export const client = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-if (typeof window !== "undefined") {
-  console.info("[manager] API BASE_URL (raw):", BASE_URL);
-  console.info("[manager] API BASE_URL (normalized):", NORMALIZED_BASE_URL);
-  if (!NORMALIZED_BASE_URL.includes("unitrans-backend")) {
-    console.error("[manager] WARNING: BASE_URL does not point to unitrans-backend:", NORMALIZED_BASE_URL);
-  }
-}
-
 // Log login request payloads and error responses for debugging
 client.interceptors.request.use((config) => {
-  if (config && config.url && config.url.includes('/api/auth/login')) {
-    console.log('[manager-axios] login POST request:');
-    console.log('  URL:', config.url);
-    console.log('  Method:', config.method);
-    console.log('  Headers:', config.headers);
-    console.log('  Data:', config.data);
-    console.log('  Data type:', typeof config.data);
-  }
   return config;
 });
 
 client.interceptors.response.use(
   (resp) => resp,
-  (err) => {
-    try {
-      if (err?.config?.url && err.config.url.includes('/api/auth/login')) {
-        // eslint-disable-next-line no-console
-        console.error('[manager] login error response:', err.response?.data);
-      }
-    } catch (e) {
+  (err) => Promise.reject(err)
+);
       // ignore logging errors
     }
     return Promise.reject(err);

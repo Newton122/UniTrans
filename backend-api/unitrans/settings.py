@@ -51,7 +51,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'unitrans.middleware.LogRequestBodyMiddleware',
 ]
 
 ROOT_URLCONF = 'unitrans.urls'
@@ -116,7 +115,6 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
-    'EXCEPTION_HANDLER': 'unitrans.exception_handler.custom_exception_handler',
 }
 
 # SimpleJWT
@@ -179,5 +177,3 @@ CORS_ALLOWED_ORIGINS = [
     ).split(',')
 ]
 CORS_ALLOW_CREDENTIALS = True
-# Temporary: allow all origins for debugging CORS issues
-CORS_ALLOW_ALL_ORIGINS = True
