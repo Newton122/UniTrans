@@ -2,6 +2,7 @@ from pathlib import Path
 from datetime import timedelta
 import dj_database_url
 from decouple import config
+from corsheaders.defaults import default_headers
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -177,3 +178,11 @@ CORS_ALLOWED_ORIGINS = [
     ).split(',')
 ]
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'authorization',
+]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r'^https://unitrans\.onrender\.com$',
+    r'^https://frontend-(driver|manager|student)\.onrender\.com$',
+    r'^https://frontent-(driver|manager|student)\.onrender\.com$',
+]
